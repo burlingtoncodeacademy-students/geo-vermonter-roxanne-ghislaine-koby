@@ -1,7 +1,8 @@
-import './App.css';
-import { useState } from 'react'
+
+import React, { useState } from 'react'
 
 import Map from './components/Map'
+import './App.css';
 
 function App() {
 
@@ -15,3 +16,36 @@ function App() {
 }
 
 export default App;
+
+
+/// class-based components right now bc it makes more sense to me//
+//will most likely change to function based//
+
+
+
+// Defining what the starting state IS //
+//might need to add more if I missed something//
+
+useState = {
+  gameStart: false,
+  lat: null,
+  long: null,
+  startLat: null,
+  startLong: null,
+  playerGuess: false,
+  playerQuit: false,
+  countyInfo: null,
+  townInfo: null,
+  zoom: 8,
+  gameZoom: 18,
+  score: 100,
+  modal: false,
+  info: null,
+  };
+//}
+
+
+
+
+
+
