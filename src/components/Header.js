@@ -9,10 +9,10 @@ import '../styles/Header.css'
 function Header() {
     return(
         <div
-        class = "geo-game-info" >
+        className = "geo-game-info" >
             <h1> Geo-Vermonter Project </h1>
 
-            <p class = "about"> 
+            <p className = "about"> 
                 You've been dropped into a random point,
                 somewhere in Vermont. You have an initial
                 score of 100, that decreases by 1 point
