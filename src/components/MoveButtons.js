@@ -1,22 +1,30 @@
 import "../styles/MoveButtons.css";
-import App from "../App.js"
-import {useState} from 'react'
+import { useState } from "react";
+
+// I think this page might be all set now; the handleMove[direction] in App.js is doing the work now that these are set up.
 
 function MoveButtons(props) {
-
-  
-
-    return (
+  return (
     <div id="move-buttons-container">
       <div className="move-buttons-item"></div>
       <div className="move-buttons-item">
-        <button className="direction" direction="north" onClick={props.handleMoveNorth}>
+        <button
+          className="direction"
+          direction="north"
+          onClick={props.handleMoveNorth}
+          disabled={props.buttonDisabled}
+        >
           Go North
         </button>
       </div>
       <div className="move-buttons-item"></div>
       <div className="move-buttons-item">
-        <button className="direction" direction="west" onClick={props.handleMoveWest}> 
+        <button
+          className="direction"
+          direction="west"
+          onClick={props.handleMoveWest}
+          disabled={props.buttonDisabled}
+        >
           Go West
         </button>
       </div>
@@ -27,13 +35,23 @@ function MoveButtons(props) {
         />
       </div>
       <div className="move-buttons-item">
-        <button className="direction" direction="east" onClick={props.handleMoveEast}>
+        <button
+          className="direction"
+          direction="east"
+          onClick={props.handleMoveEast}
+          disabled={props.buttonDisabled}
+        >
           Go East
         </button>
       </div>
       <div className="move-buttons-item"></div>
       <div className="move-buttons-item">
-        <button className="direction" direction="south" onClick={props.handleMoveSouth}>
+        <button
+          className="direction"
+          direction="south"
+          onClick={props.handleMoveSouth}
+          disabled={props.buttonDisabled}
+        >
           Go South
         </button>
       </div>

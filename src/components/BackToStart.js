@@ -1,10 +1,10 @@
 
 
-function BackToStart() {
+function BackToStart(props) {
 
     return(
 
-    <button>Back to Start</button>
+    <button id="back-to-start" disabled={props.buttonDisabled}>Back to Start</button>
 
     )
 
