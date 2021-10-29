@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-
 import Map from "./components/Map";
 import "./styles/App.css";
 import Header from "./components/Header";
@@ -8,10 +7,58 @@ import MoveButtons from "./components/MoveButtons";
 import Info from "./components/Info";
 import Buttons from "./components/Buttons"
 import Score from "./components/Score"
-import PlayButton from "./components/PlayButton"
 
 function App() {
+  //variables for position of center map drop point
   const [center, setCenter] = useState([43.88, -72.7317]);
+  const [zoom, setZoom] = useState(8);
+
+  //variables for generation of random lat & long
+  const [randomLat, setRandomLat] = useState(43.88);
+  const [randomLong, setRandomLong] = useState(-72.7317);
+
+// game variables (start, quit, score)
+const [score, setScore] = useState(100);
+  const [startGame, setStartGame] = useState(true);
+  const [quitGame, setQuitGame] = useState(false);
+
+
+
+  // directional & movement variables
+  const [moveNorth, setMoveNorth] = useState(0);
+  // const [moveEast, setMoveEast] = useState(false);
+  // const [moveSouth, setMoveSouth] = useState(false);
+  // const [moveWest, setMoveWest] = useState(false);
+  // OR should it be like: 
+  // const [move, setMove] = useState({north}) // and then we'll have a handleMove function
+
+  function handleMoveNorth(evt) {
+    evt.preventDefault()
+  //setMoveNorth(moveNorth+.002)
+  console.log("hi from handleMoveNorth")
+  setScore(score-1)
+  }
+
+
+// function randomDrop places a drop point somewhere in VT within the borders
+function randomDrop() {
+  // setting consts for the (min, max) for both lat & long
+  const MinLat = 42.730315;
+  const MaxLat = 45.005419;
+  const MinLong = -73.35218;
+  const MaxLong = -71.510225;
+
+  let randomLat = null;
+  let randomLong = null;
+
+// will need the border data that's stored in './components/data/border.js'
+// bc we want the random drop to be within the state border coords
+
+} 
+
+
+
+ 
 
 
 // add variables under (score, start, quit)
@@ -27,25 +74,22 @@ function App() {
 
       <div id="body-wrapper">
 
-        <div class="body-item">
+        <div className="body-item">
           <Map center={center} />
         </div>
 
-        <div class="body-item" id="body-grid">
-        <div class="body-grid-item">
-          <PlayButton />
+        <div className="body-item" id="body-grid">
+
+          <div className="body-grid-item">
+          <Score score={score}/>
           </div>
-          <div class="body-grid-item"></div>
-          <div class="body-grid-item">
-          <Score />
-          </div>
-          <div class="body-grid-item">
+          <div className="body-grid-item">
           <Buttons/>
           </div>
-          <div class="body-grid-item">
-          <MoveButtons/>
+          <div className="body-grid-item">
+          <MoveButtons handleMoveNorth={handleMoveNorth}/>
           </div>
-          <div class="body-grid-item">
+          <div className="body-grid-item">
           <Info/>
           </div>
 
@@ -91,3 +135,11 @@ export default App;
 //   modal: false,
 //   info: null,
 //   };
+
+
+// fxn GoNorth () {
+// setGoNorth(goNorthCount +1);
+// setRandomLat(randomLat + 0.002);
+// setCenter([randomLat + 0.002, randomLong]);
+// setScore(score-1);
+// }
