@@ -2,24 +2,21 @@ import "../styles/MoveButtons.css";
 import App from "../App.js"
 import {useState} from 'react'
 
-function MoveButtons(handleMoveNorth) {
+function MoveButtons(props) {
 
-    const move = () => {
-        moveHandler
-    }
   
 
     return (
     <div id="move-buttons-container">
       <div className="move-buttons-item"></div>
       <div className="move-buttons-item">
-        <button className="direction" direction="north" onClick={move}>
+        <button className="direction" direction="north" onClick={props.handleMoveNorth}>
           Go North
         </button>
       </div>
       <div className="move-buttons-item"></div>
       <div className="move-buttons-item">
-        <button className="direction" direction="west">
+        <button className="direction" direction="west" onClick={props.handleMoveWest}> 
           Go West
         </button>
       </div>
@@ -30,13 +27,13 @@ function MoveButtons(handleMoveNorth) {
         />
       </div>
       <div className="move-buttons-item">
-        <button className="direction" direction="east">
+        <button className="direction" direction="east" onClick={props.handleMoveEast}>
           Go East
         </button>
       </div>
       <div className="move-buttons-item"></div>
       <div className="move-buttons-item">
-        <button className="direction" direction="south">
+        <button className="direction" direction="south" onClick={props.handleMoveSouth}>
           Go South
         </button>
       </div>

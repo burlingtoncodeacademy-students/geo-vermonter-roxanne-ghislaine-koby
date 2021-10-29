@@ -6,7 +6,9 @@ import NavBar from "./components/NavBar";
 import MoveButtons from "./components/MoveButtons";
 import Info from "./components/Info";
 import Buttons from "./components/Buttons"
+import PlayButton from "./components/PlayButton"
 import Score from "./components/Score"
+import BackToStart from "./components/BackToStart"
 
 function App() {
   //variables for position of center map drop point
@@ -25,19 +27,40 @@ const [score, setScore] = useState(100);
 
 
   // directional & movement variables
-  const [moveNorth, setMoveNorth] = useState(0);
+  // const [moveNorth, setMoveNorth] = useState(0);
   // const [moveEast, setMoveEast] = useState(false);
   // const [moveSouth, setMoveSouth] = useState(false);
   // const [moveWest, setMoveWest] = useState(false);
   // OR should it be like: 
   // const [move, setMove] = useState({north}) // and then we'll have a handleMove function
 
+
+  // Functions for when user clicks a directional button
   function handleMoveNorth(evt) {
     evt.preventDefault()
+    console.log("hi from handleMoveNorth")
   //setMoveNorth(moveNorth+.002)
-  console.log("hi from handleMoveNorth")
+  // setGoNorth(goNorthCount +1); // not sure we need this since we have setCenter
+  // setRandomLat(randomLat + 0.002);
+  setCenter([randomLat + 0.002, randomLong]) // I wonder if we can remove the terms "randomLat" and "randomLong" and the "+ 0.002" will just be added to what's there. Cuz we don't actually want randomLat and randomLong to change
   setScore(score-1)
   }
+
+  function handleMoveSouth(evt) {
+    evt.preventDefault()
+    setScore(score-1)
+  }
+
+  function handleMoveEast(evt) {
+    evt.preventDefault()
+    setScore(score-1)
+  }
+
+  function handleMoveWest(evt) {
+    evt.preventDefault()
+    setScore(score-1)
+  }
+
 
 
 // function randomDrop places a drop point somewhere in VT within the borders
@@ -55,10 +78,6 @@ function randomDrop() {
 // bc we want the random drop to be within the state border coords
 
 } 
-
-
-
- 
 
 
 // add variables under (score, start, quit)
@@ -87,10 +106,13 @@ function randomDrop() {
           <Buttons/>
           </div>
           <div className="body-grid-item">
-          <MoveButtons handleMoveNorth={handleMoveNorth}/>
+          <MoveButtons handleMoveNorth={handleMoveNorth} handleMoveSouth={handleMoveSouth} handleMoveEast={handleMoveEast} handleMoveWest={handleMoveWest}/>
           </div>
           <div className="body-grid-item">
           <Info/>
+          </div>
+          <div className="body-grid-item">
+            <BackToStart />
           </div>
 
           </div>
@@ -137,9 +159,4 @@ export default App;
 //   };
 
 
-// fxn GoNorth () {
-// setGoNorth(goNorthCount +1);
-// setRandomLat(randomLat + 0.002);
-// setCenter([randomLat + 0.002, randomLong]);
-// setScore(score-1);
-// }
+
