@@ -1,0 +1,15 @@
+#move-buttons-container {
+    position: static;
+    right: 50px;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    grid-template-rows: 50px 50px 50px;
+    border: 1px dashed black;
+    padding: 10px;
+}
+
+.move-buttons-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

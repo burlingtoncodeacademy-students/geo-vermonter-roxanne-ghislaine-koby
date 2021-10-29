@@ -1,11 +1,12 @@
 // stuff needed to be imported into the header file //
 import React from "react";
-import './header.css'
+import '../styles/Header.css'
 
 // At the top of the page , the nav selector and placeholders for
 // "about" and "high scores"... maybe make "about a modal from the navbar"
+// ROX: see NavBar.js
 
-function NavBar() {
+function Header() {
     return(
         <div
         class = "geo-game-info" >
@@ -20,7 +21,7 @@ function NavBar() {
                 the drop-down menu.
             </p>
 
-            <h4 placeholder = "???"> 
+            {/* <h4 placeholder = "???"> 
                 ${Latitude} </h4>
 
             <h4 placeholder = "???"> 
@@ -33,10 +34,10 @@ function NavBar() {
                 ${Town} </h4>
 
             <h4 placeholder = "???" >
-                ${highScore} </h4>
+                ${highScore} </h4> */}
 
         </div>
     );
 }
 
-export default NavBar;
+export default Header;

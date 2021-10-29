@@ -1,0 +1,14 @@
+#info-box {
+    background-color: lightblue;
+    padding: 10px;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+
+}
+
+#info-box-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
