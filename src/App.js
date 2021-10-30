@@ -11,7 +11,6 @@ import BackToStart from "./components/BackToStart";
 import GuessButton from "./components/GuessButton";
 import GiveUpButton from "./components/GiveUpButton";
 import AboutModal from "./components/AboutModal"
-import AboutButton from "./components/AboutButton"
 
 function App() {
   //variables for position of center map drop point
@@ -31,22 +30,25 @@ function App() {
   const [buttonDisabled, setButtonDisabled] = useState(true) // Applied to all buttons, starting them out disabled. Then hitting Play changes true to false (making them not disabled). It works!
   const [playButtonDisabled, setPlayButtonDisabled] = useState(false)
 
-  // variable to show/hide About Modal:
-  const [aboutModalOpen, setAboutModalOpen] = useState(false) // starts out NOT showing modal
+  // variable and functions to show/hide About Modal:
+  const [isAboutModalOpen, setIsAboutModalOpen] = useState(false) // starts out NOT showing modal
 
-  function aboutModalDisplay(evt) {
+  function openAboutModal(evt) {
     evt.preventDefault()
-    if (aboutModalOpen === false) { // && evt.target.id === "about-button" ?
-      setAboutModalOpen(true)
-    } else if (aboutModalOpen === true) {
-      setAboutModalOpen(false)
-    }
+    setIsAboutModalOpen(true)
   }
 
+  function closeAboutModal(evt) {
+    evt.preventDefault()
+    setIsAboutModalOpen(false)
+  }
+
+  // Function for when user clicks Play button
   function handlePlayClick(evt) {
     evt.preventDefault()
     setButtonDisabled(false) // Enables buttons
     setPlayButtonDisabled(true) // Disables the play button
+    // This is also where a pin should be dropped in a random location
 
   }
 
@@ -96,9 +98,8 @@ function App() {
   return (
     <div>
       <Header />
-      {/* <AboutModal aboutModalOpen={aboutModalOpen}/> */}
-      <AboutButton aboutModalDisplay={aboutModalDisplay}/>
-      <NavBar />
+      <AboutModal isAboutModalOpen={isAboutModalOpen} closeAboutModal={closeAboutModal}/>
+      <NavBar openAboutModal={openAboutModal}/>
 
       <div id="body-wrapper">
         <div className="body-item">

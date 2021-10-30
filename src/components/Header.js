@@ -12,15 +12,6 @@ function Header() {
         className = "geo-game-info" >
             <h1> Geo-Vermonter Project </h1>
 
-            <p className = "about"> 
-                You've been dropped into a random point,
-                somewhere in Vermont. You have an initial
-                score of 100, that decreases by 1 point
-                each time you make a move. To guess, click
-                the "Guess" button and choose a county from
-                the drop-down menu.
-            </p>
-
             {/* <h4 placeholder = "???"> 
                 ${Latitude} </h4>
 
