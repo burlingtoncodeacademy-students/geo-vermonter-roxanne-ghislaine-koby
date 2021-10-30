@@ -8,4 +8,4 @@ function GuessButton(props) {
     )
 }
 
-export default GuessButton
+export default GuessButton;

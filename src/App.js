@@ -96,7 +96,7 @@ function App() {
   return (
     <div>
       <Header />
-      <AboutModal aboutModalOpen={aboutModalOpen}/>
+      {/* <AboutModal aboutModalOpen={aboutModalOpen}/> */}
       <AboutButton aboutModalDisplay={aboutModalDisplay}/>
       <NavBar />
 
