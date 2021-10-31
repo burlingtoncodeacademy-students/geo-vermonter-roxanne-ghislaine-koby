@@ -1,6 +1,7 @@
 // imports
 import { useState } from "react";
 import Info from "./Info";
+//import Info from "./Info";
 //import NominatimSearch.tsx from '@terrestris/react-geo/dist/Field/NominatimSearch/NominatimSearch.tsx';
 
 // Purpose of this file:
@@ -9,7 +10,7 @@ import Info from "./Info";
 // User selects the county they want to submit as their guess,
 // User then 'clicks' the "guess" button to submit the selected county.
 
-function CountyMenu(props) {
+function VtCounties(props) {
 
     // variable assignments
     // user's current county that they are currently located in on map
@@ -22,6 +23,7 @@ function CountyMenu(props) {
     // to see if their guess was correct
     let compareCounty; 
     const [data, setData] = useState();
+    //const [toggleButton, setToggleButton] = useState(true);
     let cancelButton = false;
 
     // Fxn for user to switch the county they selected
@@ -35,7 +37,7 @@ function CountyMenu(props) {
     }
 
     // comment
-    function submitCountySelection(evt) {
+    function submitCountyForm(evt) {
         //preventdef ensures page doesn't refresh
         evt.preventDefault();
         ActualCountyFetch();
@@ -85,8 +87,69 @@ function CountyMenu(props) {
         compareCounty = data && data.address.county
     }
 
-    /// stop point 2:30p 10-30-21 gmbl
+    let info = (info)
 
+    return (
+        
+        <div>
+            // show ? marks as placeholder until user submits a guess 
+            // 'info' = the info from info.js (the "location information")
+            <Info
+            County = {'?'}
+            City = {'?'}
+            Latitude = {'?'}
+            Longitude = {'?'} />
 
+            // if user submits a correct guesses
+            <Info
+            County = {compareCounty}
+            City = {data && data.address.city}
+            Latitude = {props.randomLat}
+            Longitude = {props.randomLong} />
 
+            <h4>
+                {currentCounty
+                ? 'You have chosen ${selectedCounty} as your guess'
+                : 'Click the "guess" button to lock in your answer'}
+                </h4>
+
+            <form
+            onSubmit={submitCountyForm}>
+                <select
+                name = "Select County"
+                value = {selectedCounty}
+                onChange = {changeCountySelection}>
+
+                    <option value="Select County">Select a County</option>
+                    <option value = "Addison"> ADDISON COUNTY </option>
+                    <option value = "Bennington"> BENNINGTON COUNTY </option>
+                    <option value = "Caledonia"> CALEDONIA COUNTY </option>
+                    <option value = "Chittenden"> CHITTENDEN COUNTY </option>
+                    <option value = "Essex"> ESSEX COUNTY </option>
+                    <option value = "Franklin"> FRANKLIN COUNTY </option>
+                    <option value = "Grand Isle"> GRAND ISLE COUNTY </option>
+                    <option value = "Lamoille"> LAMOILLE COUNTY </option>
+                    <option value = "Orange"> ORANGE COUNTY </option>
+                    <option value = "Orleans"> ORLEANS COUNTY </option>
+                    <option value = "Rutland"> RUTLAND COUNTY </option>
+                    <option value = "Washington"> WASHINGTON COUNTY </option>
+                    <option value = "Windham"> WINDHAM COUNTY </option>
+                    <option value = "Windsor"> WINDSOR COUNTY </option>
+                </select>
+                <input
+                type = "submit"
+                value = "Guess" />
+
+                <button
+                onClick = {(evt) => {
+                    cancel = true;
+                    props.guessBox(false);
+                }}
+                
+            </form>
+            
+        </div>
+    )
 }
+
+export default VtCounties;
