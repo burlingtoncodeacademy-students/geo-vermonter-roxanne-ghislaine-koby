@@ -10,14 +10,14 @@ import Score from "./components/Score";
 import BackToStart from "./components/BackToStart";
 import GuessButton from "./components/GuessButton";
 import GiveUpButton from "./components/GiveUpButton";
-import AboutModal from "./components/AboutModal"
+import AboutModal from "./components/AboutModal";
 
 function App() {
   //variables for position of center map drop point
-  const [center, setCenter] = useState([43.88, -72.7317]); // I wonder if the coordinates here should be randomLat and randomLong 
+  const [center, setCenter] = useState([43.88, -72.7317]);
   const [zoom, setZoom] = useState(8);
 
-  //variables for generation of random lat & long
+  //variables for generation of random lat & long (starting at the center of VT before Play is clicked)
   const [randomLat, setRandomLat] = useState(43.88);
   const [randomLong, setRandomLong] = useState(-72.7317);
 
@@ -27,53 +27,35 @@ function App() {
   const [quitGame, setQuitGame] = useState(false);
 
   // A variable to enable buttons:
-  const [buttonDisabled, setButtonDisabled] = useState(true) // Applied to all buttons, starting them out disabled. Then hitting Play changes true to false (making them not disabled). It works!
-  const [playButtonDisabled, setPlayButtonDisabled] = useState(false)
+  const [buttonDisabled, setButtonDisabled] = useState(true); // Applied to all buttons, starting them out disabled. Then hitting Play changes true to false (making them not disabled). It works!
+  const [playButtonDisabled, setPlayButtonDisabled] = useState(false);
 
   // variable and functions to show/hide About Modal:
-  const [isAboutModalOpen, setIsAboutModalOpen] = useState(false) // starts out NOT showing modal
+  const [isAboutModalOpen, setIsAboutModalOpen] = useState(false); // starts out NOT showing modal
+
+  // Variables for Info box
+  const [latDisplay, setLatDisplay] = useState("?");
+  const [longDisplay, setLongDisplay] = useState("?");
+  const [townDisplay, setTownDisplay] = useState("?");
+  const [countyDisplay, setCountyDisplay] = useState("?");
 
   function openAboutModal(evt) {
-    evt.preventDefault()
-    setIsAboutModalOpen(true)
+    evt.preventDefault();
+    setIsAboutModalOpen(true);
   }
 
   function closeAboutModal(evt) {
-    evt.preventDefault()
-    setIsAboutModalOpen(false)
+    evt.preventDefault();
+    setIsAboutModalOpen(false);
   }
 
   // Function for when user clicks Play button
   function handlePlayClick(evt) {
-    evt.preventDefault()
-    setButtonDisabled(false) // Enables buttons
-    setPlayButtonDisabled(true) // Disables the play button
+    evt.preventDefault();
+    setButtonDisabled(false); // Enables buttons
+    setPlayButtonDisabled(true); // Disables the play button
     // This is also where a pin should be dropped in a random location
-
-  }
-
-  // Functions for when user clicks a directional button
-  function handleMoveNorth(evt) {
-    evt.preventDefault();
-    // setGoNorth(goNorthCount +1); // not sure we need this since we have setCenter
-    // setRandomLat(randomLat + 0.002);
-    setCenter([randomLat + 0.002, randomLong]); // I wonder if we can remove the terms "randomLat" and "randomLong" and the "+ 0.002" will just be added to what's there. Cuz we don't actually want randomLat and randomLong to change
-    setScore(score - 1);
-  }
-
-  function handleMoveSouth(evt) {
-    evt.preventDefault();
-    setScore(score - 1);
-  }
-
-  function handleMoveEast(evt) {
-    evt.preventDefault();
-    setScore(score - 1);
-  }
-
-  function handleMoveWest(evt) {
-    evt.preventDefault();
-    setScore(score - 1);
+    randomDrop(); // calling the randomDrop function to drop a pin in a random place in VT
   }
 
   // function randomDrop places a drop point somewhere in VT within the borders
@@ -91,6 +73,22 @@ function App() {
     // bc we want the random drop to be within the state border coords
   }
 
+  // function for when 'I Give Up' button is clicked:
+  function handleGiveUpClick(evt) {
+    evt.preventDefault();
+    setLatDisplay(randomLat)
+    setLongDisplay(randomLong)
+    setTownDisplay("fetch shit")
+    setCountyDisplay("fetch shit")
+  }
+
+  // function for when 'Back to Start' button is clicked:
+  // map center should move back to the original place (at randomLat, randomLong)
+  function handleBackToStartClick(evt) {
+    evt.preventDefault()
+    setCenter([randomLat, randomLong])
+  }
+
   // add variables under (score, start, quit)
   //variables for moving the player's marker
   //keeping v-names consistent with Directional Buttons JS
@@ -98,8 +96,11 @@ function App() {
   return (
     <div>
       <Header />
-      <AboutModal isAboutModalOpen={isAboutModalOpen} closeAboutModal={closeAboutModal}/>
-      <NavBar openAboutModal={openAboutModal}/>
+      <AboutModal
+        isAboutModalOpen={isAboutModalOpen}
+        closeAboutModal={closeAboutModal}
+      />
+      <NavBar openAboutModal={openAboutModal} />
 
       <div id="body-wrapper">
         <div className="body-item">
@@ -108,31 +109,39 @@ function App() {
 
         <div className="body-item" id="body-grid">
           <div className="body-grid-item">
-            <PlayButton playButtonDisabled={playButtonDisabled} handlePlayClick={handlePlayClick}/>
+            <PlayButton
+              playButtonDisabled={playButtonDisabled}
+              handlePlayClick={handlePlayClick}
+            />
           </div>
           <div className="body-grid-item">
             <Score score={score} />
           </div>
           <div className="body-grid-item">
             <MoveButtons
-            buttonDisabled={buttonDisabled}
-              handleMoveNorth={handleMoveNorth}
-              handleMoveSouth={handleMoveSouth}
-              handleMoveEast={handleMoveEast}
-              handleMoveWest={handleMoveWest}
+              buttonDisabled={buttonDisabled}
+              center={center}
+              setCenter={setCenter}
+              score={score}
+              setScore={setScore}
             />
           </div>
           <div className="body-grid-item">
-            <Info />
+            <Info
+              latDisplay={latDisplay}
+              longDisplay={longDisplay}
+              townDisplay={townDisplay}
+              countyDisplay={countyDisplay}
+            />
           </div>
           <div className="body-grid-item">
-            <BackToStart buttonDisabled={buttonDisabled}/>
+            <BackToStart buttonDisabled={buttonDisabled} handleBackToStartClick={handleBackToStartClick}/>
           </div>
           <div className="body-grid-item">
-            <GiveUpButton  buttonDisabled={buttonDisabled}/>
+            <GiveUpButton buttonDisabled={buttonDisabled} handleGiveUpClick={handleGiveUpClick}/>
           </div>
           <div className="body-grid-item">
-            <GuessButton  buttonDisabled={buttonDisabled}/>
+            <GuessButton buttonDisabled={buttonDisabled} />
           </div>
         </div>
       </div>

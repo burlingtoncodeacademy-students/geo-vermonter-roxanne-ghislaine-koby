@@ -1,9 +1,36 @@
 import "../styles/MoveButtons.css";
 import { useState } from "react";
 
-// I think this page might be all set now; the handleMove[direction] in App.js is doing the work now that these are set up.
-
 function MoveButtons(props) {
+
+
+    function handleMoveNorth(evt) {
+      evt.preventDefault();
+      props.center[0] += 0.002 // This is my best shot at how to change lat/long
+      // setCenter([randomLat + 0.002, randomLong]);
+      props.setScore(props.score - 1);
+    }
+  
+    function handleMoveSouth(evt) {
+      evt.preventDefault();
+      props.center[0] -= 0.002
+      props.setScore(props.score - 1);
+    }
+  
+    function handleMoveEast(evt) {
+      evt.preventDefault();
+      props.center[1] += 0.002
+      props.setScore(props.score - 1);
+    }
+  
+    function handleMoveWest(evt) {
+      evt.preventDefault();
+      props.center[1] -= 0.002
+      props.setScore(props.score - 1);
+    }
+
+  
+
   return (
     <div id="move-buttons-container">
       <div className="move-buttons-item"></div>
@@ -11,7 +38,7 @@ function MoveButtons(props) {
         <button
           className="direction"
           direction="north"
-          onClick={props.handleMoveNorth}
+          onClick={handleMoveNorth}
           disabled={props.buttonDisabled}
         >
           Go North
@@ -22,7 +49,7 @@ function MoveButtons(props) {
         <button
           className="direction"
           direction="west"
-          onClick={props.handleMoveWest}
+          onClick={handleMoveWest}
           disabled={props.buttonDisabled}
         >
           Go West
@@ -38,7 +65,7 @@ function MoveButtons(props) {
         <button
           className="direction"
           direction="east"
-          onClick={props.handleMoveEast}
+          onClick={handleMoveEast}
           disabled={props.buttonDisabled}
         >
           Go East
@@ -49,7 +76,7 @@ function MoveButtons(props) {
         <button
           className="direction"
           direction="south"
-          onClick={props.handleMoveSouth}
+          onClick={handleMoveSouth}
           disabled={props.buttonDisabled}
         >
           Go South
