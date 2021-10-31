@@ -20,8 +20,8 @@ import GuessModal from "./components/GuessModal";
 
 function App() {
   //variables for generation of random lat & long; starting at center of VT, then will change to a random point 
-  // const [randomLat, setRandomLat] = useState(43.88);
-  // const [randomLong, setRandomLong] = useState(-72.7317);
+  const [randomLat, setRandomLat] = useState(43.88);
+  const [randomLong, setRandomLong] = useState(-72.7317);
 
   //variables for position of center map drop point (starting at center of VT)
   let centerLat = 43.88
@@ -71,8 +71,8 @@ function App() {
     randomDrop(); // calling the randomDrop function to drop a pin in a random place in VT
   }
 
-  //let randomLat=centerLat;
- // let randomLong=centerLong;
+//   let randomLat=centerLat;
+//  let randomLong=centerLong;
 
   // function randomDrop places a drop point somewhere in VT within the borders
   function randomDrop() {
@@ -88,8 +88,8 @@ function App() {
    let vtBorderData = L.geoJSON(borderData);
    //while loop below ensures drop point is confined to inside VT
    while(layerLength !== 1){
-    randomLat = Math.random() * (maxLat - minLat) + minLat;
-    randomLong = Math.random() * (maxLong - minLong) + minLong;
+    setRandomLat(Math.random() * (maxLat - minLat) + minLat);
+    setRandomLong(Math.random() * (maxLong - minLong) + minLong);
     //  setRandomLat(Math.random() * (MaxLat - MinLat) + MinLat)
     // setRandomLong(Math.random() * (MaxLong - MinLong) + MinLong)
     //since VT is polygon shaped state & leaflet-pip = a library for checking if a point is inside a polygon,
@@ -99,13 +99,13 @@ function App() {
    }
     //un-comment lines after test to re-test w/ lines
     
-    // console.log("[randomLat, randomLong] in randomDrop fxn: ", [randomLat, randomLong])
-    // setCenter([randomLat, randomLong]); // this should make the map center around the random lat and long...doesn't yet
-    // centerLat = randomLat
-    // centerLong = randomLong
-    // setRandomLat(randomLat);
-    // setRandomLong(randomLong);
-    //setCenter([randomLat, randomLong]);
+    console.log("[randomLat, randomLong] in randomDrop fxn: ", [randomLat, randomLong])
+    setCenter([randomLat, randomLong]); // this should make the map center around the random lat and long...doesn't yet
+    centerLat = randomLat
+    centerLong = randomLong
+    setRandomLat(randomLat);
+    setRandomLong(randomLong);
+    setCenter([randomLat, randomLong]);
     // setZoom(18); // should set zoom level to 18...but not yet happening
 
     // will need the border data that's stored in './components/data/border.js'
@@ -115,40 +115,40 @@ function App() {
 
  // variable names for user moving their point on the map
 //reference comment about using "count" & why it's helpful for backtracking steps/moves
-// const [moveNorthCount, setMoveNorthCount] = useState(0);
-// const [moveEastCount, setMoveEastCount] = useState(0);
-// const [moveSouthCount, setMoveSouthCount] = useState(0);
-// const [moveWestCount, setMoveWestCount] = useState(0);
+const [moveNorthCount, setMoveNorthCount] = useState(0);
+const [moveEastCount, setMoveEastCount] = useState(0);
+const [moveSouthCount, setMoveSouthCount] = useState(0);
+const [moveWestCount, setMoveWestCount] = useState(0);
 
 // FUNCTIONS TO MOVE ON MAP (gmbl setup)- just the way it makes sense to me
 
-// function moveNorth() {
-//   setMoveNorthCount(moveNorthCount + 1);
-//   setRandomLat(randomLat + 0.002);
-//   setCenter([randomLat + 0.002, randomLong]);
-//   setScore(score - 1);
-// }
+function moveNorth() {
+  // setMoveNorthCount(moveNorthCount + 1);
+  // setRandomLat(randomLat + 0.002);
+  // setCenter([randomLat + 0.002, randomLong]);
+  // setScore(score - 1);
+}
 
-// function moveEast() {
-//   setMoveEastCount(moveEastCount + 1);
-//   setRandomLong(randomLong + 0.002);
-//   setCenter([randomLat, randomLong + 0.002]);
-//   setScore(score - 1);
-// }
+function moveEast() {
+  setMoveEastCount(moveEastCount + 1);
+  setRandomLong(randomLong + 0.002);
+  setCenter([randomLat, randomLong + 0.002]);
+  setScore(score - 1);
+}
 
-// function moveSouth() {
-//   setMoveSouthCount(moveSouthCount + 1);
-//   setRandomLat(randomLat - 0.002);
-//   setCenter([randomLat - 0.002, randomLong]);
-//   setScore(score - 1);
-// }
+function moveSouth() {
+  setMoveSouthCount(moveSouthCount + 1);
+  setRandomLat(randomLat - 0.002);
+  setCenter([randomLat - 0.002, randomLong]);
+  setScore(score - 1);
+}
 
-// function moveWest() {
-//   setMoveWestCount(moveWestCount + 1);
-//   setRandomLong(randomLong - 0.002);
-//   setCenter([randomLat, randomLong - 0.002]);
-//   setScore(score - 1);
-// }
+function moveWest() {
+  setMoveWestCount(moveWestCount + 1);
+  setRandomLong(randomLong - 0.002);
+  setCenter([randomLat, randomLong - 0.002]);
+  setScore(score - 1);
+}
 //by using this function set up for user movement we can target
 //all of the things we need to change in 1 simple function
 
@@ -169,7 +169,7 @@ goWest={moveWest} /> */}
 // function backToStart() {
 //     satRandomLat(randomLat + moveNorthCount * 0.002 - moveSouthCount * 0.002);
 //     setRandonLong(randomLong + moveEastCount * 0.002 - moveWestCount * 0.002);
-//     // this accounts for all of the moves made since each move (in every direction) was 0.002
+// //     // this accounts for all of the moves made since each move (in every direction) was 0.002
 //     setCenter([randomLat + moveNorthCount * 0.002 - moveSouthCount * 0.002,
 //     randomLong + moveEastCount * 0.002 - moveWestCount * 0.002,
 //     ]);
@@ -201,7 +201,22 @@ goWest={moveWest} /> */}
   // map center should move back to the original place (at randomLat, randomLong)
   function handleBackToStartClick(evt) {
     evt.preventDefault();
-    setCenter([randomLat, randomLong]);
+  //  setCenter([randomLat, randomLong]);
+  setRandomLat(randomLat + moveNorthCount * 0.002 - moveSouthCount * 0.002);
+  setRandomLong(randomLong + moveEastCount * 0.002 - moveWestCount * 0.002);
+//     // this accounts for all of the moves made since each move (in every direction) was 0.002
+  setCenter([randomLat + moveNorthCount * 0.002 - moveSouthCount * 0.002,
+  randomLong + moveEastCount * 0.002 - moveWestCount * 0.002,
+  ]);
+//     // then we basically 'reset' all the directional moveCounts to 0
+//     // since the user wants to go back to start
+//     // and after each move, the 'count' variables will 
+//     // start keeping track again
+  setMoveNorthCount(0);
+  setMoveEastCount(0);
+  setMoveWestCount(0);
+  setMoveSouthCount(0);
+
   }
 
   // add variables under (score, start, quit)
@@ -252,6 +267,11 @@ goWest={moveWest} /> */}
               centerLong={centerLong}
               score={score}
               setScore={setScore}
+              setRandomLat={setRandomLat}
+              setMoveNorthCount={setMoveNorthCount}
+              randomLat={randomLat}
+              randomLong={randomLong}
+              moveNorthCount={moveNorthCount}
             />
           </div>
           <div className="body-grid-item">
