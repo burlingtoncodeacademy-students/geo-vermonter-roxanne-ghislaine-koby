@@ -48,11 +48,11 @@ function moveWest() {
 //to reference these functions, we would need something in "directionalButtons"
 // where we can import these functions, something like this:
 
-<DirectionalButtons
+{/* <DirectionalButtons
 goNorth={moveNorth}
 goEast={moveEast}
 goSouth={moveSouth}
-goWest={moveWest} />
+goWest={moveWest} /> */}
 
 
 //but earlier on before the move functions (or after i guess it doesnt matter)

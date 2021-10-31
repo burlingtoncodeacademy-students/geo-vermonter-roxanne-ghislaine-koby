@@ -28,7 +28,8 @@ function MoveButtons(props) {
       props.setScore(props.score - 1);
     }
 
-  
+
+
 
   return (
     <div id="move-buttons-container">
@@ -37,7 +38,7 @@ function MoveButtons(props) {
         <button
           className="direction"
           direction="north"
-          onClick={handleMoveNorth}
+          onClick={moveNorth}
           disabled={props.buttonDisabled}
         >
           Go North
@@ -48,7 +49,7 @@ function MoveButtons(props) {
         <button
           className="direction"
           direction="west"
-          onClick={handleMoveWest}
+          onClick={moveWest}
           disabled={props.buttonDisabled}
         >
           Go West
@@ -64,7 +65,7 @@ function MoveButtons(props) {
         <button
           className="direction"
           direction="east"
-          onClick={handleMoveEast}
+          onClick={moveEast}
           disabled={props.buttonDisabled}
         >
           Go East
@@ -75,7 +76,7 @@ function MoveButtons(props) {
         <button
           className="direction"
           direction="south"
-          onClick={handleMoveSouth}
+          onClick={moveSouth}
           disabled={props.buttonDisabled}
         >
           Go South
