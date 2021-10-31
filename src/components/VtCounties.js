@@ -144,7 +144,7 @@ function VtCounties(props) {
                 onClick = {(evt) => {
                     cancel = true;
                     props.guessBox(false);
-                }}
+                }}></button>
                 
             </form>
             
