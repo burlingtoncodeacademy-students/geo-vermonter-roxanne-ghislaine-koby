@@ -18,13 +18,13 @@ function VtCounties(props) {
     // for county selected by user
     const [selectedCounty, setSelectedCounty] = useState('');
     // describes the county the user selected from the drop-down menu
-    const [evaluateCounty, setEvaluateCounty] = useState('');
+    //const [evaluateCounty, setEvaluateCounty] = useState('');
     // used to compare the fetched county & evaluate current county to selected county
     // to see if their guess was correct
     let compareCounty; 
     const [data, setData] = useState();
     //const [toggleButton, setToggleButton] = useState(true);
-    let cancelButton = false;
+    //let cancelButton = false;
 
     // Fxn for user to switch the county they selected
     // e.g. they chose the wrong one from drop-down menu
@@ -142,7 +142,7 @@ function VtCounties(props) {
 
                 <button
                 onClick = {(evt) => {
-                    cancel = true;
+                    //cancel = true;
                     props.guessBox(false);
                 }}></button>
                 
