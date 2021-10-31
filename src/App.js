@@ -11,6 +11,9 @@ import BackToStart from "./components/BackToStart";
 import GuessButton from "./components/GuessButton";
 import GiveUpButton from "./components/GiveUpButton";
 import AboutModal from "./components/AboutModal"
+import VtCounties from "./components/VtCounties"
+
+
 
 function App() {
   //variables for position of center map drop point
