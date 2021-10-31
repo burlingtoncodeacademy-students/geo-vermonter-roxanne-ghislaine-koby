@@ -53,7 +53,7 @@ function VtCounties(props) {
                 alert("Wrong answer!");
                 // else statement if user is correct
             } else {
-                (selectedCounty === compareCounty)
+                //(selectedCounty === compareCounty) // Rox commented this out as it was throwing an error (and as far as I can tell isn't necessary to have)
                 alert("Correct answer! You WIN!");
             }
             // else statement if user tries to click guess without selecting a county
@@ -142,7 +142,7 @@ function VtCounties(props) {
 
                 <button
                 onClick = {(evt) => {
-                    cancel = true;
+                    cancelButton = true;
                     props.guessBox(false);
                 }}></button>
                 

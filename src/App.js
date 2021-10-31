@@ -10,10 +10,9 @@ import Score from "./components/Score";
 import BackToStart from "./components/BackToStart";
 import GuessButton from "./components/GuessButton";
 import GiveUpButton from "./components/GiveUpButton";
-import AboutModal from "./components/AboutModal"
-import VtCounties from "./components/VtCounties"
-
-
+import AboutModal from "./components/AboutModal";
+import GuessModal from "./components/GuessModal"
+import VtCounties from "./components/VtCounties";
 
 function App() {
   //variables for position of center map drop point
@@ -33,23 +32,25 @@ function App() {
   const [buttonDisabled, setButtonDisabled] = useState(true); // Applied to all buttons, starting them out disabled. Then hitting Play changes true to false (making them not disabled). It works!
   const [playButtonDisabled, setPlayButtonDisabled] = useState(false);
 
-  // variable and functions to show/hide About Modal:
-  const [isAboutModalOpen, setIsAboutModalOpen] = useState(false); // starts out NOT showing modal
-
   // Variables for Info box
   const [latDisplay, setLatDisplay] = useState("?");
   const [longDisplay, setLongDisplay] = useState("?");
   const [townDisplay, setTownDisplay] = useState("?");
   const [countyDisplay, setCountyDisplay] = useState("?");
 
+  // variables to show/hide modals (starting out hidden):
+  const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
+  const [isGuessModalOpen, setIsGuessModalOpen] = useState(false)
+
+  // functions to open modals:
   function openAboutModal(evt) {
     evt.preventDefault();
     setIsAboutModalOpen(true);
   }
 
-  function closeAboutModal(evt) {
+  function openGuessModal(evt) {
     evt.preventDefault();
-    setIsAboutModalOpen(false);
+    setIsGuessModalOpen(true);
   }
 
   // Function for when user clicks Play button
@@ -79,17 +80,19 @@ function App() {
   // function for when 'I Give Up' button is clicked:
   function handleGiveUpClick(evt) {
     evt.preventDefault();
-    setLatDisplay(randomLat)
-    setLongDisplay(randomLong)
-    setTownDisplay("fetch shit")
-    setCountyDisplay("fetch shit")
+    setLatDisplay(randomLat);
+    setLongDisplay(randomLong);
+    setTownDisplay("fetch shit");
+    setCountyDisplay("fetch shit");
+    setButtonDisabled(true); // Disables buttons
+    setPlayButtonDisabled(false) // Enables Play button
   }
 
   // function for when 'Back to Start' button is clicked:
   // map center should move back to the original place (at randomLat, randomLong)
   function handleBackToStartClick(evt) {
-    evt.preventDefault()
-    setCenter([randomLat, randomLong])
+    evt.preventDefault();
+    setCenter([randomLat, randomLong]);
   }
 
   // add variables under (score, start, quit)
@@ -101,7 +104,11 @@ function App() {
       <Header />
       <AboutModal
         isAboutModalOpen={isAboutModalOpen}
-        closeAboutModal={closeAboutModal}
+        setIsAboutModalOpen={setIsAboutModalOpen}
+      />
+      <GuessModal 
+      isGuessModalOpen={isGuessModalOpen}
+      setIsGuessModalOpen={setIsGuessModalOpen}
       />
       <NavBar openAboutModal={openAboutModal} />
 
@@ -138,13 +145,19 @@ function App() {
             />
           </div>
           <div className="body-grid-item">
-            <BackToStart buttonDisabled={buttonDisabled} handleBackToStartClick={handleBackToStartClick}/>
+            <BackToStart
+              buttonDisabled={buttonDisabled}
+              handleBackToStartClick={handleBackToStartClick}
+            />
           </div>
           <div className="body-grid-item">
-            <GiveUpButton buttonDisabled={buttonDisabled} handleGiveUpClick={handleGiveUpClick}/>
+            <GiveUpButton
+              buttonDisabled={buttonDisabled}
+              handleGiveUpClick={handleGiveUpClick}
+            />
           </div>
           <div className="body-grid-item">
-            <GuessButton buttonDisabled={buttonDisabled} />
+            <GuessButton buttonDisabled={buttonDisabled} openGuessModal={openGuessModal}/>
           </div>
         </div>
       </div>

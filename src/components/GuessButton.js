@@ -3,7 +3,7 @@ function GuessButton(props) {
     return(
 
         <div>
-            <button id="guess-button" disabled={props.buttonDisabled}>Guess!</button>
+            <button id="guess-button" disabled={props.buttonDisabled} onClick={props.openGuessModal}>Guess!</button>
         </div>
     )
 }
