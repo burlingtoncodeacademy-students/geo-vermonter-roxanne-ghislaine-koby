@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import leafletPip from 'leaflet-pip';
+import L from 'leaflet';
+import borderData from "./data/border";
 import Map from "./components/Map";
 import "./styles/App.css";
 import Header from "./components/Header";
@@ -11,17 +14,23 @@ import BackToStart from "./components/BackToStart";
 import GuessButton from "./components/GuessButton";
 import GiveUpButton from "./components/GiveUpButton";
 import AboutModal from "./components/AboutModal";
-import GuessModal from "./components/GuessModal"
-import VtCounties from "./components/VtCounties";
+import GuessModal from "./components/GuessModal";
+//import VtCounties from "./components/VtCounties"
+//LOL make sure we change 83 & 84 "fetch shit "
 
 function App() {
-  //variables for position of center map drop point
-  const [center, setCenter] = useState([43.88, -72.7317]);
-  const [zoom, setZoom] = useState(8);
+  //variables for generation of random lat & long; starting at center of VT, then will change to a random point 
+  // const [randomLat, setRandomLat] = useState(43.88);
+  // const [randomLong, setRandomLong] = useState(-72.7317);
 
-  //variables for generation of random lat & long (starting at the center of VT before Play is clicked)
-  const [randomLat, setRandomLat] = useState(43.88);
-  const [randomLong, setRandomLong] = useState(-72.7317);
+  //variables for position of center map drop point (starting at center of VT)
+  let centerLat = 43.88
+  let centerLong = -72.7317
+  let zoom = 8
+  const [center, setCenter] = useState([43.88, -72.7317]);
+  //const [zoom, setZoom] = useState(8);
+
+  
 
   // game variables (start, quit, score)
   const [score, setScore] = useState(100);
@@ -40,7 +49,7 @@ function App() {
 
   // variables to show/hide modals (starting out hidden):
   const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
-  const [isGuessModalOpen, setIsGuessModalOpen] = useState(false)
+  const [isGuessModalOpen, setIsGuessModalOpen] = useState(false);
 
   // functions to open modals:
   function openAboutModal(evt) {
@@ -58,25 +67,51 @@ function App() {
     evt.preventDefault();
     setButtonDisabled(false); // Enables buttons
     setPlayButtonDisabled(true); // Disables the play button
-    // This is also where a pin should be dropped in a random location
+    zoom = 18
     randomDrop(); // calling the randomDrop function to drop a pin in a random place in VT
   }
 
+  let randomLat=centerLat;
+  let randomLong=centerLong;
+
   // function randomDrop places a drop point somewhere in VT within the borders
   function randomDrop() {
-    // setting consts for the (min, max) for both lat & long
-    const MinLat = 42.730315;
-    const MaxLat = 45.005419;
-    const MinLong = -73.35218;
-    const MaxLong = -71.510225;
+    let layerLength = 0;
+    const maxLat = 45.005419
+    const minLat = 42.730315
+    const maxLong = -71.510225
+    const minLong = -73.35218
 
-    let randomLat = null;
-    let randomLong = null;
+    
+    
+    // Here's the function for a random lat and long between min and max coordinates. doesn't yet check that it's within the polygon. G is working on that
+   let vtBorderData = L.geoJSON(borderData);
+   //while loop below ensures drop point is confined to inside VT
+   while(layerLength !== 1){
+    randomLat = Math.random() * (maxLat - minLat) + minLat;
+    randomLong = Math.random() * (maxLong - minLong) + minLong;
+    //  setRandomLat(Math.random() * (MaxLat - MinLat) + MinLat)
+    // setRandomLong(Math.random() * (MaxLong - MinLong) + MinLong)
+    //since VT is polygon shaped state & leaflet-pip = a library for checking if a point is inside a polygon,
+    //it checks if the random lat/long coords are within vt border
+    layerLength = leafletPip.pointInLayer(
+      [randomLong, randomLat], vtBorderData).length
+   }
+    //un-comment lines after test to re-test w/ lines
+    
+    // console.log("[randomLat, randomLong] in randomDrop fxn: ", [randomLat, randomLong])
+    // setCenter([randomLat, randomLong]); // this should make the map center around the random lat and long...doesn't yet
+    // centerLat = randomLat
+    // centerLong = randomLong
+    // setRandomLat(randomLat);
+    // setRandomLong(randomLong);
+    setCenter([randomLat, randomLong]);
+    // setZoom(18); // should set zoom level to 18...but not yet happening
 
     // will need the border data that's stored in './components/data/border.js'
     // bc we want the random drop to be within the state border coords
   }
-
+////////////////////////////////////////////////////////////////////
   // function for when 'I Give Up' button is clicked:
   function handleGiveUpClick(evt) {
     evt.preventDefault();
@@ -85,7 +120,7 @@ function App() {
     setTownDisplay("fetch shit");
     setCountyDisplay("fetch shit");
     setButtonDisabled(true); // Disables buttons
-    setPlayButtonDisabled(false) // Enables Play button
+    setPlayButtonDisabled(false); // Enables Play button
   }
 
   // function for when 'Back to Start' button is clicked:
@@ -106,15 +141,22 @@ function App() {
         isAboutModalOpen={isAboutModalOpen}
         setIsAboutModalOpen={setIsAboutModalOpen}
       />
-      <GuessModal 
-      isGuessModalOpen={isGuessModalOpen}
-      setIsGuessModalOpen={setIsGuessModalOpen}
+      <GuessModal
+        isGuessModalOpen={isGuessModalOpen}
+        setIsGuessModalOpen={setIsGuessModalOpen}
       />
       <NavBar openAboutModal={openAboutModal} />
 
       <div id="body-wrapper">
         <div className="body-item">
-          <Map center={center} />
+          <Map
+            center={center}
+            centerLat={centerLat}
+            centerLong={centerLong}
+            zoom={zoom}
+            randomLat={randomLat}
+            randomLong={randomLong}
+          />
         </div>
 
         <div className="body-item" id="body-grid">
@@ -132,6 +174,8 @@ function App() {
               buttonDisabled={buttonDisabled}
               center={center}
               setCenter={setCenter}
+              centerLat={centerLat}
+              centerLong={centerLong}
               score={score}
               setScore={setScore}
             />
@@ -157,7 +201,10 @@ function App() {
             />
           </div>
           <div className="body-grid-item">
-            <GuessButton buttonDisabled={buttonDisabled} openGuessModal={openGuessModal}/>
+            <GuessButton
+              buttonDisabled={buttonDisabled}
+              openGuessModal={openGuessModal}
+            />
           </div>
         </div>
       </div>

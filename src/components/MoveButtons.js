@@ -6,26 +6,25 @@ function MoveButtons(props) {
 
     function handleMoveNorth(evt) {
       evt.preventDefault();
-      props.center[0] += 0.002 // This is my best shot at how to change lat/long
-      // setCenter([randomLat + 0.002, randomLong]);
+      props.centerLat += 0.002
       props.setScore(props.score - 1);
     }
   
     function handleMoveSouth(evt) {
       evt.preventDefault();
-      props.center[0] -= 0.002
+      props.centerLat -= 0.002
       props.setScore(props.score - 1);
     }
   
     function handleMoveEast(evt) {
       evt.preventDefault();
-      props.center[1] += 0.002
+      props.centerLong += 0.002
       props.setScore(props.score - 1);
     }
   
     function handleMoveWest(evt) {
       evt.preventDefault();
-      props.center[1] -= 0.002
+      props.centerLong -= 0.002
       props.setScore(props.score - 1);
     }
 

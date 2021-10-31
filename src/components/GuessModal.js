@@ -1,4 +1,5 @@
 import '../styles/GuessModal.css'
+import VtCounties from './VtCounties'
 
 function GuessModal(props) {
 
@@ -11,7 +12,7 @@ function GuessModal(props) {
         <>
         {props.isGuessModalOpen ? <div
             id="guess-modal"><div id="guess-modal-content">
-                This modal should have a dropdown list of VT counties (and know which is the correct one). The user will pick one. If correct, they are alerted that they win, the modal closes, and the info box populates with the correct info. If incorrect, they are alerted that they're wrong, the modal closes, and 10 points are subtracted from their score. 
+                <VtCounties />
                 <button id="close-guess-modal-button" onClick={closeGuessModal}>Close</button>
             </div>
         </div> : null}

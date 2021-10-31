@@ -18,13 +18,12 @@ function VtCounties(props) {
     // for county selected by user
     const [selectedCounty, setSelectedCounty] = useState('');
     // describes the county the user selected from the drop-down menu
-    const [evaluateCounty, setEvaluateCounty] = useState('');
+    //const [evaluateCounty, setEvaluateCounty] = useState('');
     // used to compare the fetched county & evaluate current county to selected county
     // to see if their guess was correct
     let compareCounty; 
     const [data, setData] = useState();
     //const [toggleButton, setToggleButton] = useState(true);
-    let cancelButton = false;
 
     // Fxn for user to switch the county they selected
     // e.g. they chose the wrong one from drop-down menu
@@ -87,14 +86,14 @@ function VtCounties(props) {
         compareCounty = data && data.address.county
     }
 
-    let info = (info)
+    // let info = (info)
 
     return (
         
         <div>
-            // show ? marks as placeholder until user submits a guess 
-            // 'info' = the info from info.js (the "location information")
-            <Info
+            {/* // show ? marks as placeholder until user submits a guess 
+            // 'info' = the info from info.js (the "location information") */}
+            {/* <Info
             County = {'?'}
             City = {'?'}
             Latitude = {'?'}
@@ -105,7 +104,7 @@ function VtCounties(props) {
             County = {compareCounty}
             City = {data && data.address.city}
             Latitude = {props.randomLat}
-            Longitude = {props.randomLong} />
+            Longitude = {props.randomLong} /> */}
 
             <h4>
                 {currentCounty
@@ -139,12 +138,6 @@ function VtCounties(props) {
                 <input
                 type = "submit"
                 value = "Guess" />
-
-                <button
-                onClick = {(evt) => {
-                    cancelButton = true;
-                    props.guessBox(false);
-                }}></button>
                 
             </form>
             
