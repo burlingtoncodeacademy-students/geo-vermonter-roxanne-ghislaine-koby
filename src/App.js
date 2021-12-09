@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import leafletPip from 'leaflet-pip';
-import L from 'leaflet';
+import leafletPip from "leaflet-pip";
+import L from "leaflet";
 import borderData from "./data/border";
 import Map from "./components/Map";
 import "./styles/App.css";
@@ -15,22 +15,21 @@ import GuessButton from "./components/GuessButton";
 import GiveUpButton from "./components/GiveUpButton";
 import AboutModal from "./components/AboutModal";
 import GuessModal from "./components/GuessModal";
-//import VtCounties from "./components/VtCounties"
-//LOL make sure we change 83 & 84 "fetch shit "
+import VtCounties from "./components/VtCounties";
+import checkCounty from "./components/Vtoutline";
+import { useEffect } from "react/cjs/react.development";
 
 function App() {
-  //variables for generation of random lat & long; starting at center of VT, then will change to a random point 
+  //variables for generation of random lat & long; starting at center of VT, then will change to a random point
   const [randomLat, setRandomLat] = useState(43.88);
   const [randomLong, setRandomLong] = useState(-72.7317);
 
   //variables for position of center map drop point (starting at center of VT)
-  let centerLat = 43.88
-  let centerLong = -72.7317
-  let zoom = 8
+  let centerLat = 43.88;
+  let centerLong = -72.7317;
+  let zoom = 8;
   const [center, setCenter] = useState([43.88, -72.7317]);
   //const [zoom, setZoom] = useState(8);
-
-  
 
   // game variables (start, quit, score)
   const [score, setScore] = useState(100);
@@ -51,6 +50,11 @@ function App() {
   const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
   const [isGuessModalOpen, setIsGuessModalOpen] = useState(false);
 
+  // variables for county check
+  const [vtCounties, setVtCounties] = useState(false);
+  const [countyData, setCountyData] = useState(false);
+
+
   // functions to open modals:
   function openAboutModal(evt) {
     evt.preventDefault();
@@ -67,162 +71,86 @@ function App() {
     evt.preventDefault();
     setButtonDisabled(false); // Enables buttons
     setPlayButtonDisabled(true); // Disables the play button
-    zoom = 18
-    randomDrop(); // calling the randomDrop function to drop a pin in a random place in VT
+    zoom = 18;
+    // calling the randomDrop function to drop a pin in a random place in VT
+    randomDrop(); 
   }
-
-//   let randomLat=centerLat;
-//  let randomLong=centerLong;
 
   // function randomDrop places a drop point somewhere in VT within the borders
   function randomDrop() {
     let layerLength = 0;
-    const maxLat = 45.005419
-    const minLat = 42.730315
-    const maxLong = -71.510225
-    const minLong = -73.35218
+    const maxLat = 45.005419;
+    const minLat = 42.730315;
+    const maxLong = -71.510225;
+    const minLong = -73.35218;
 
-    
-    
-    // Here's the function for a random lat and long between min and max coordinates. doesn't yet check that it's within the polygon. G is working on that
-   let vtBorderData = L.geoJSON(borderData);
-   //while loop below ensures drop point is confined to inside VT
-   while(layerLength !== 1){
-    setRandomLat(Math.random() * (maxLat - minLat) + minLat);
-    setRandomLong(Math.random() * (maxLong - minLong) + minLong);
-    //  setRandomLat(Math.random() * (MaxLat - MinLat) + MinLat)
-    // setRandomLong(Math.random() * (MaxLong - MinLong) + MinLong)
-    //since VT is polygon shaped state & leaflet-pip = a library for checking if a point is inside a polygon,
-    //it checks if the random lat/long coords are within vt border
-    layerLength = leafletPip.pointInLayer(
-      [randomLong, randomLat], vtBorderData).length
-   }
-    //un-comment lines after test to re-test w/ lines
-    
-    console.log("[randomLat, randomLong] in randomDrop fxn: ", [randomLat, randomLong])
-    setCenter([randomLat, randomLong]); // this should make the map center around the random lat and long...doesn't yet
-    centerLat = randomLat
-    centerLong = randomLong
+    // function for random lat and long between min and max coordinates
+    let vtBorderData = L.geoJSON(borderData);
+
+    //while loop below ensures drop point is confined to inside VT
+    while (layerLength !== 1) {
+      setRandomLat(Math.random() * (maxLat - minLat) + minLat);
+      setRandomLong(Math.random() * (maxLong - minLong) + minLong);
+      
+      //it checks if the random lat/long coords are within vt border
+      layerLength = leafletPip.pointInLayer(
+        [randomLong, randomLat],
+        vtBorderData
+      ).length;
+    }
+
+    console.log("[randomLat, randomLong] in randomDrop fxn: ", [
+      randomLat,
+      randomLong,
+    ]);
+
+    // map centered around the random lat and long
+    setCenter([randomLat, randomLong]); 
+    centerLat = randomLat;
+    centerLong = randomLong;
     setRandomLat(randomLat);
     setRandomLong(randomLong);
     setCenter([randomLat, randomLong]);
-    // setZoom(18); // should set zoom level to 18...but not yet happening
-
-    // will need the border data that's stored in './components/data/border.js'
-    // bc we want the random drop to be within the state border coords
   }
-///////////////////////////////////////////////////////////
+ 
+  // variables for user moving their point on the map
+  const [moveNorthCount, setMoveNorthCount] = useState(0);
+  const [moveEastCount, setMoveEastCount] = useState(0);
+  const [moveSouthCount, setMoveSouthCount] = useState(0);
+  const [moveWestCount, setMoveWestCount] = useState(0);
 
- // variable names for user moving their point on the map
-//reference comment about using "count" & why it's helpful for backtracking steps/moves
-const [moveNorthCount, setMoveNorthCount] = useState(0);
-const [moveEastCount, setMoveEastCount] = useState(0);
-const [moveSouthCount, setMoveSouthCount] = useState(0);
-const [moveWestCount, setMoveWestCount] = useState(0);
-
-// FUNCTIONS TO MOVE ON MAP (gmbl setup)- just the way it makes sense to me
-
-function moveNorth() {
-  // setMoveNorthCount(moveNorthCount + 1);
-  // setRandomLat(randomLat + 0.002);
-  // setCenter([randomLat + 0.002, randomLong]);
-  // setScore(score - 1);
-}
-
-function moveEast() {
-  setMoveEastCount(moveEastCount + 1);
-  setRandomLong(randomLong + 0.002);
-  setCenter([randomLat, randomLong + 0.002]);
-  setScore(score - 1);
-}
-
-function moveSouth() {
-  setMoveSouthCount(moveSouthCount + 1);
-  setRandomLat(randomLat - 0.002);
-  setCenter([randomLat - 0.002, randomLong]);
-  setScore(score - 1);
-}
-
-function moveWest() {
-  setMoveWestCount(moveWestCount + 1);
-  setRandomLong(randomLong - 0.002);
-  setCenter([randomLat, randomLong - 0.002]);
-  setScore(score - 1);
-}
-//by using this function set up for user movement we can target
-//all of the things we need to change in 1 simple function
-
-//to reference these functions, we would need something in "directionalButtons"
-// where we can import these functions, something like this:
-
-{/* <DirectionalButtons
-goNorth={moveNorth}
-goEast={moveEast}
-goSouth={moveSouth}
-goWest={moveWest} /> */}
-
-
-//but earlier on before the move functions (or after i guess it doesnt matter)
-// this is an exmaple of how i would use these 'count' variables to retrace moves
-// therefore, returning the player to start
-
-// function backToStart() {
-//     satRandomLat(randomLat + moveNorthCount * 0.002 - moveSouthCount * 0.002);
-//     setRandonLong(randomLong + moveEastCount * 0.002 - moveWestCount * 0.002);
-// //     // this accounts for all of the moves made since each move (in every direction) was 0.002
-//     setCenter([randomLat + moveNorthCount * 0.002 - moveSouthCount * 0.002,
-//     randomLong + moveEastCount * 0.002 - moveWestCount * 0.002,
-//     ]);
-//     // then we basically 'reset' all the directional moveCounts to 0
-//     // since the user wants to go back to start
-//     // and after each move, the 'count' variables will 
-//     // start keeping track again
-//     setMoveNorthCount(0);
-//     setMoveEastCount(0);
-//     setMoveWestCount(0);
-//     setMoveSouthCount(0);
-// }
-
-
-
-////////////////////////////////////////////////////////////////////
   // function for when 'I Give Up' button is clicked:
   function handleGiveUpClick(evt) {
     evt.preventDefault();
-    setLatDisplay(randomLat);
+    setLatDisplay({});
     setLongDisplay(randomLong);
-    setTownDisplay("fetch shit");
-    setCountyDisplay("fetch shit");
+    setTownDisplay("fetch stuff");
+    setCountyDisplay("fetch stuff");
     setButtonDisabled(true); // Disables buttons
     setPlayButtonDisabled(false); // Enables Play button
   }
 
-  // function for when 'Back to Start' button is clicked:
   // map center should move back to the original place (at randomLat, randomLong)
   function handleBackToStartClick(evt) {
     evt.preventDefault();
-  //  setCenter([randomLat, randomLong]);
-  setRandomLat(randomLat + moveNorthCount * 0.002 - moveSouthCount * 0.002);
-  setRandomLong(randomLong + moveEastCount * 0.002 - moveWestCount * 0.002);
-//     // this accounts for all of the moves made since each move (in every direction) was 0.002
-  setCenter([randomLat + moveNorthCount * 0.002 - moveSouthCount * 0.002,
-  randomLong + moveEastCount * 0.002 - moveWestCount * 0.002,
-  ]);
-//     // then we basically 'reset' all the directional moveCounts to 0
-//     // since the user wants to go back to start
-//     // and after each move, the 'count' variables will 
-//     // start keeping track again
-  setMoveNorthCount(0);
-  setMoveEastCount(0);
-  setMoveWestCount(0);
-  setMoveSouthCount(0);
-
+    // this accounts for all of the moves made since each move (in every direction) was 0.002
+    setScore(100);
+    setRandomLat(randomLat + moveNorthCount * 0.05 - moveSouthCount * 0.05);
+    setRandomLong(randomLong + moveEastCount * 0.05 - moveWestCount * 0.05);
+   
+    setCenter([
+      randomLat + moveNorthCount * 0.05 - moveSouthCount * 0.05,
+      randomLong + moveEastCount * 0.05 - moveWestCount * 0.05,
+    ]);
+    
+    // since the user wants to go back to start, after each move, the 'count' variables will start keeping track again
+    setMoveNorthCount(0);
+    setMoveEastCount(0);
+    setMoveWestCount(0);
+    setMoveSouthCount(0);
   }
 
-  // add variables under (score, start, quit)
   //variables for moving the player's marker
-  //keeping v-names consistent with Directional Buttons JS
-
   return (
     <div>
       <Header />
@@ -268,24 +196,42 @@ goWest={moveWest} /> */}
               score={score}
               setScore={setScore}
               setRandomLat={setRandomLat}
+              setRandomLong={setRandomLong}
               setMoveNorthCount={setMoveNorthCount}
               randomLat={randomLat}
               randomLong={randomLong}
               moveNorthCount={moveNorthCount}
+              moveSouthCount={moveSouthCount}
+              moveEastCount={moveEastCount}
+              moveWestCount={moveWestCount}
+              setMoveSouthCount={setMoveSouthCount}
+              setMoveEastCount={setMoveEastCount}
+              setMoveWestCount={setMoveWestCount}
             />
           </div>
           <div className="body-grid-item">
             <Info
-              latDisplay={latDisplay}
-              longDisplay={longDisplay}
-              townDisplay={townDisplay}
-              countyDisplay={countyDisplay}
+              Latitude={countyData && countyData.lat}
+              Longitude={countyData && countyData.lon}
+              Town={
+                (countyData && countyData.address.city) ||
+                (countyData && countyData.address.town)
+              }
+              County={countyData && countyData.address.county}
             />
           </div>
           <div className="body-grid-item">
             <BackToStart
               buttonDisabled={buttonDisabled}
               handleBackToStartClick={handleBackToStartClick}
+              setScore={setScore}
+              setRandomLat={setRandomLat}
+              setRandomLong={setRandomLong}
+              setCenter={setCenter}
+              setMoveEastCount={setMoveEastCount}
+              setMoveNorthCount={setMoveNorthCount}
+              setMoveSouthCount={setMoveSouthCount}
+              setMoveWestCount={setMoveWestCount}
             />
           </div>
           <div className="body-grid-item">
@@ -307,4 +253,3 @@ goWest={moveWest} /> */}
 }
 
 export default App;
-

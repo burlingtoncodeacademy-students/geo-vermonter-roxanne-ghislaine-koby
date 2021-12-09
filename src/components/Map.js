@@ -1,14 +1,7 @@
+// ----------- imports --------- //
 import { MapContainer, TileLayer, Polygon, Marker, Polyline } from "react-leaflet";
 import borderData from "../data/border";
 import '../styles/Map.css'
-// import App from '../App.js'
-
-// Rox added lines 6-10 after Julie's workshop (commenting out for now):
-// //necessary imports from leaflet:
-// import L from "leaflet";
-// import "leaflet/dist/leaflet.css";
-// //importing leaflet-pip:
-// import leafletPip from "@mapbox/leaflet-pip";
 
 function Map(props) {
   let vtOutline = borderData.geometry.coordinates[0].map(coords => [coords[1], coords[0]])

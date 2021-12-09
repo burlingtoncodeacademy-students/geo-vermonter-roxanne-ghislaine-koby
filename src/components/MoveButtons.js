@@ -7,26 +7,38 @@ function MoveButtons(props) {
     // props.centerLat += 0.002
     // props.setScore(props.score - 1);
     props.setMoveNorthCount(props.moveNorthCount + 1);
-    props.setRandomLat(props.randomLat + 0.002);
-    props.setCenter([props.randomLat + 0.002, props.randomLong]);
+    props.setRandomLat(props.randomLat + 0.050);
+    props.setCenter([props.randomLat + 0.050, props.randomLong]);
     props.setScore(props.score - 1);
   }
 
   function handleMoveSouth(evt) {
     evt.preventDefault();
-    props.centerLat -= 0.002;
+    // props.centerLat -= 0.002;
+    // props.setScore(props.score - 1);
+    props.setMoveSouthCount(props.moveSouthCount + 1);
+    props.setRandomLat(props.randomLat - 0.050);
+    props.setCenter([props.randomLat - 0.050, props.randomLong]);
     props.setScore(props.score - 1);
   }
 
   function handleMoveEast(evt) {
     evt.preventDefault();
-    props.centerLong += 0.002;
+    // props.centerLong += 0.002;
+    // props.setScore(props.score - 1);
+    props.setMoveEastCount(props.moveEastCount + 1);
+    props.setRandomLong(props.randomLong + 0.050);
+    props.setCenter([props.randomLat, props.randomLong + 0.050]);
     props.setScore(props.score - 1);
   }
 
   function handleMoveWest(evt) {
     evt.preventDefault();
-    props.centerLong -= 0.002;
+    // props.centerLong -= 0.002;
+    // props.setScore(props.score - 1);
+    props.setMoveWestCount(props.moveWestCount + 1);
+    props.setRandomLong(props.randomLong - 0.050);
+    props.setCenter([props.randomLat, props.randomLong - 0.050]);
     props.setScore(props.score - 1);
   }
 
